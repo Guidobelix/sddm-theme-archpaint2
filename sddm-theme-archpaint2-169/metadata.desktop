@@ -1,0 +1,13 @@
+[SddmGreeterTheme]
+Name=ArchPaint 2 16/9
+Description=SDDM Login screen based on ArchPaint2 Wallpaper
+Screenshot=screenshot.png
+License=CC-BY-SA
+Type=sddm-theme
+Version=1.0
+Screenshot=screenshot.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Theme-Id=archpaint2
+Theme-API=2.0
