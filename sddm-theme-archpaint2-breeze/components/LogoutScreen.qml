@@ -45,6 +45,11 @@ BreezeBlock {
         shortcut: "Escape"
     }
 
+    Controls.Action {
+        onTriggered: root.currentAction()
+        shortcut: "Return"
+    }
+
     onRemainingTimeChanged: {
         if(remainingTime<0)
             root.currentAction()
@@ -94,8 +99,8 @@ BreezeBlock {
         }
 
         BreezeLabel {
+            text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "In 1 second", "In %1 seconds", root.remainingTime);
             anchors.horizontalCenter: progressBar.horizontalCenter
-            text: i18ndp("plasma_lookandfeel_org.kde.lookandfeel", "in 1 second", "in %1 seconds", root.remainingTime);
         }
 
         state: mode
@@ -138,21 +143,6 @@ BreezeBlock {
                 id: commitButton
                 onClicked: root.currentAction()
                 focus: true
-
-                function trigger() {
-                    if (commitButton.activeFocus) {
-                        root.currentAction()
-                    }
-                }
-
-                Controls.Action {
-                    onTriggered: commitButton.trigger()
-                    shortcut: "Return"
-                }
-                Controls.Action {
-                    onTriggered: commitButton.trigger()
-                    shortcut: "Enter" // on numpad
-                }
             }
         }
 

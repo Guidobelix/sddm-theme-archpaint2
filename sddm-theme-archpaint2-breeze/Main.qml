@@ -72,181 +72,178 @@ Image {
         anchors.horizontalCenter: root.horizontalCenter
     }
 
-    Repeater {
-        model: screenModel
-        Controls.StackView {
-            id: stackView
+    Controls.StackView {
+        id: stackView
+        property variant geometry: screenModel.geometry(screenModel.primary)
+        width: geometry.width
+        height: units.largeSpacing * 12
+        anchors.centerIn: parent
+        anchors.horizontalCenterOffset: 0
+        anchors.verticalCenterOffset: geometry.height * 0.20
 
-            property bool isPrimaryScreen: index == screenModel.primary
-
-            width: geometry.width
-            x: geometry.x
-
-            height: units.largeSpacing*12
-            //Display the BreezeBlock in the middle of each screen
-            y: geometry.y + (geometry.height * 0.7) - (height / 2)
-
-            initialItem: BreezeBlock {
-                id: loginPrompt
-                main: UserSelect {
-                    id: usersSelection
-                    model: userModel
-                    selectedIndex: userModel.lastIndex
-
-                    Connections {
-                        target: sddm
-                        onLoginFailed: {
-                            usersSelection.notification = i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Login Failed")
-                        }
+        initialItem: BreezeBlock {
+            id: loginPrompt
+            width: parent.width
+            main: UserSelect {
+                id: usersSelection
+                model: userModel
+                selectedIndex: userModel.lastIndex
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                Connections {
+                    target: sddm
+                    onLoginFailed: {
+                        usersSelection.notification = i18nd("plasma_lookandfeel_org.kde.lookandfeel", "Login Failed")
                     }
+                }
+                BreezeLabel {
+                    id: capsLockWarning
+                    text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Caps Lock is on")
+                    visible: keystateSource.data["Caps Lock"]["Locked"]
 
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: 0
+                    anchors.verticalCenterOffset: units.largeSpacing * 3
+                    font.weight: Font.Bold
+
+                    PlasmaCore.DataSource {
+                        id: keystateSource
+                        engine: "keystate"
+                        connectedSources: "Caps Lock"
+                    }
                 }
 
-                controls: Item {
-                    height: childrenRect.height
+            }
 
-                    property alias password: passwordInput.text
-                    property alias sessionIndex: sessionCombo.currentIndex
+            controls: Item {
+                height: childrenRect.height
 
-                    ColumnLayout {
+                property alias password: passwordInput.text
+                property alias sessionIndex: sessionCombo.currentIndex
+
+                ColumnLayout {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 0
+                    RowLayout {
+                        //NOTE password is deliberately the first child so it gets focus
+                        //be careful when re-ordering
+
                         anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 0
-                        RowLayout {
-                            //NOTE password is deliberately the first child so it gets focus
-                            //be careful when re-ordering
+                        PlasmaComponents.TextField {
+                            id: passwordInput
+                            placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Password")
+                            echoMode: TextInput.Password
+                            onAccepted: {
+                                enabled = false
+                                loginPrompt.startLogin()
+                            }
+                            focus: true
 
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            PlasmaComponents.TextField {
-                                id: passwordInput
-                                placeholderText: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Password")
-                                echoMode: TextInput.Password
-                                onAccepted: {
-                                    enabled = false
-                                    loginPrompt.startLogin()
-                                }
-                                focus: true
+                            //focus works in qmlscene
+                            //but this seems to be needed when loaded from SDDM
+                            //I don't understand why, but we have seen this before in the old lock screen
+                            Timer {
+                                interval: 200
+                                running: true
+                                repeat: false
+                                onTriggered: passwordInput.forceActiveFocus()
+                            }
+                            //end hack
 
-                                //focus works in qmlscene
-                                //but this seems to be needed when loaded from SDDM
-                                //I don't understand why, but we have seen this before in the old lock screen
-                                Timer {
-                                    interval: 200
-                                    //Run this timer only on the primary screen, so the primary monitor has the focus
-                                    running: isPrimaryScreen
-                                    repeat: false
-                                    onTriggered: passwordInput.forceActiveFocus()
-                                }
-                                //end hack
-
-                                Keys.onEscapePressed: {
-                                    //nextItemInFocusChain(false) is previous Item
-                                    nextItemInFocusChain(false).forceActiveFocus();
-                                }
-
-                                //if empty and left or right is pressed change selection in user switch
-                                //this cannot be in keys.onLeftPressed as then it doesn't reach the password box
-                                Keys.onPressed: {
-                                    if (event.key == Qt.Key_Left && !text) {
-                                        loginPrompt.mainItem.decrementCurrentIndex();
-                                        event.accepted = true
-                                    }
-                                    if (event.key == Qt.Key_Right && !text) {
-                                        loginPrompt.mainItem.incrementCurrentIndex();
-                                        event.accepted = true
-                                    }
-                                }
-
+                            Keys.onEscapePressed: {
+                                //nextItemInFocusChain(false) is previous Item
+                                nextItemInFocusChain(false).forceActiveFocus();
                             }
 
-                            PlasmaComponents.Button {
-                                //this keeps the buttons the same width and thus line up evenly around the centre
-                                Layout.minimumWidth: passwordInput.width
-                                text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Login")
-                                onClicked: loginPrompt.startLogin();
+                            //if empty and left or right is pressed change selection in user switch
+                            //this cannot be in keys.onLeftPressed as then it doesn't reach the password box
+                            Keys.onPressed: {
+                                if (event.key == Qt.Key_Left && !text) {
+                                    loginPrompt.mainItem.decrementCurrentIndex();
+                                    event.accepted = true
+                                }
+                                if (event.key == Qt.Key_Right && !text) {
+                                    loginPrompt.mainItem.incrementCurrentIndex();
+                                    event.accepted = true
+                                }
                             }
+
                         }
 
-                        BreezeLabel {
-                            id: capsLockWarning
-                            text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Caps Lock is on")
-                            visible: keystateSource.data["Caps Lock"]["Locked"]
-
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            font.weight: Font.Bold
-
-                            PlasmaCore.DataSource {
-                                id: keystateSource
-                                engine: "keystate"
-                                connectedSources: "Caps Lock"
-                            }
-                        }
-                    }
-
-                    PlasmaComponents.ComboBox {
-                        id: sessionCombo
-                        model: sessionModel
-                        currentIndex: sessionModel.lastIndex
-
-                        width: 200
-                        textRole: "name"
-
-                        anchors.left: parent.left
-                    }
-
-                    LogoutOptions {
-                        mode: ""
-                        canShutdown: true
-                        canReboot: true
-                        canLogout: false
-                        exclusive: false
-
-                        anchors {
-                            right: parent.right
-                        }
-
-                        onModeChanged: {
-                            if (mode) {
-                                stackView.push(logoutScreenComponent, {"mode": mode})
-                            }
-                        }
-                        onVisibleChanged: if(visible) {
-                                              mode = ""
-                                          }
-                    }
-
-                    Connections {
-                        target: sddm
-                        onLoginFailed: {
-                            passwordInput.enabled = true
-                            passwordInput.selectAll()
-                            passwordInput.forceActiveFocus()
+                        PlasmaComponents.Button {
+                            //this keeps the buttons the same width and thus line up evenly around the centre
+                            Layout.minimumWidth: passwordInput.width
+                            text: i18nd("plasma_lookandfeel_org.kde.lookandfeel","Login")
+                            onClicked: loginPrompt.startLogin();
                         }
                     }
 
                 }
 
-                function startLogin () {
-                    sddm.login(mainItem.selectedUser, controlsItem.password, controlsItem.sessionIndex)
+                PlasmaComponents.ComboBox {
+                    id: sessionCombo
+                    model: sessionModel
+                    currentIndex: sessionModel.lastIndex
+
+                    width: 200
+                    textRole: "name"
+
+                    anchors.left: parent.left
                 }
 
-                Component {
-                    id: logoutScreenComponent
-                    LogoutScreen {
-                        onCancel: {
-                            stackView.pop()
-                        }
+                LogoutOptions {
+                    mode: ""
+                    canShutdown: true
+                    canReboot: true
+                    canLogout: false
+                    exclusive: false
 
-                        onShutdownRequested: {
-                            sddm.powerOff()
-                        }
+                    anchors {
+                        right: parent.right
+                    }
 
-                        onRebootRequested: {
-                            sddm.reboot()
+                    onModeChanged: {
+                        if (mode) {
+                            stackView.push(logoutScreenComponent, {"mode": mode})
                         }
+                    }
+                    onVisibleChanged: if(visible) {
+                        mode = ""
+                    }
+                }
+
+                Connections {
+                    target: sddm
+                    onLoginFailed: {
+                        passwordInput.enabled = true
+                        passwordInput.selectAll()
+                        passwordInput.forceActiveFocus()
+                    }
+                }
+
+            }
+
+            function startLogin () {
+                sddm.login(mainItem.selectedUser, controlsItem.password, controlsItem.sessionIndex)
+            }
+
+            Component {
+                id: logoutScreenComponent
+                LogoutScreen {
+                    onCancel: {
+                        stackView.pop()
+                    }
+
+                    onShutdownRequested: {
+                        sddm.powerOff()
+                    }
+
+                    onRebootRequested: {
+                        sddm.reboot()
                     }
                 }
             }
-
         }
+
     }
 }
