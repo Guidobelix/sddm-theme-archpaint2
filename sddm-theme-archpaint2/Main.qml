@@ -28,7 +28,21 @@ Rectangle {
         model: screenModel
         Background {
             x: geometry.x; y: geometry.y; width: geometry.width; height:geometry.height
-            source: config.background
+            property real ratio: geometry.width / geometry.height
+            source: {
+                if (ratio == 16.0 / 9.0) {
+                    source = "background_169.png"
+                }
+                else if (ratio == 16.0 / 10.0) {
+                    source = "background_1610.png"
+                }
+                else if (ratio == 4.0 / 3.0) {
+                    source = "background_43.png"
+                }
+                else {
+                    source = "background.png"
+                }
+            }
             fillMode: Image.PreserveAspectFit
             onStatusChanged: {
                 if (status == Image.Error && source != config.defaultBackground) {
