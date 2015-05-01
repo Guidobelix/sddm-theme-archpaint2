@@ -47,7 +47,7 @@ FocusScope {
             top: parent.top
 //            right: usersList.left
             left: parent.left
-            leftMargin: units.largeSpacing * 2
+            leftMargin: units.largeSpacing / 2
         }
     }
 
@@ -70,7 +70,7 @@ FocusScope {
             left: parent.horizontalCenter
             right: parent.right
 
-            leftMargin: userItemWidth*1.5
+            leftMargin: -userItemWidth * 1.5
         }
         clip: true
         height: userItemHeight
