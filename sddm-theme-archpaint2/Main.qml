@@ -98,7 +98,7 @@ Rectangle {
         Rectangle {
             anchors.centerIn: parent
             width: parent.width
-            height: 192 * parent.scale
+            height: 162
             anchors.verticalCenterOffset: parent.height / 4
             color: "#20FFFFFF"
 
