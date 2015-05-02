@@ -1,6 +1,6 @@
 [SddmGreeterTheme]
-Name=Archpaint2
-Description=SDDM Archpaint2 Theme
+Name=Archpaint2-breeze
+Description=SDDM Archpaint2 Theme using breeze components
 License=CC-BY-SA
 Type=sddm-theme
 Version=0.1
