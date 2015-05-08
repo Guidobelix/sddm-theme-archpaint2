@@ -44,10 +44,9 @@ FocusScope {
     InfoPane {
         id: infoPane
         anchors {
-            top: parent.top
+            verticalCenter: usersList.verticalCenter
 //            right: usersList.left
             left: parent.left
-            leftMargin: units.largeSpacing / 2
         }
     }
 
@@ -70,12 +69,13 @@ FocusScope {
             left: parent.horizontalCenter
             right: parent.right
 
-            leftMargin: -userItemWidth * 1.5
+            leftMargin: -userItemWidth * 1.5 //allow 1 item to the left of the centre (the half is to fit the item that will go in the centre)
         }
         clip: true
         height: userItemHeight
         cacheBuffer: 1000
 
+        //highlight the item in the middle. The actual list view starts -1.5 userItemWidths so this moves the highlighted item to the centre
         preferredHighlightBegin: userItemWidth * 1
         preferredHighlightEnd: userItemWidth * 2
 
@@ -87,12 +87,13 @@ FocusScope {
     BreezeLabel {
         id: notificationLabel
         anchors {
-            bottom: usersList.bottom
+            top: usersList.bottom
+            bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
             margins: units.largeSpacing
         }
 
-        width: usersList.userItemWidth * 3 //don't pass thebottom infoPane
+        width: usersList.userItemWidth * 3 //don't pass the infoPane
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         maximumLineCount: 1

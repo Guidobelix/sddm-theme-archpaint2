@@ -45,7 +45,7 @@ PlasmaCore.ColorScope {
     Loader {
         id: mainView
         anchors {
-            margins: units.largeSpacing / 2
+            margins: units.largeSpacing
 
             left: parent.left
             right: parent.right
@@ -61,7 +61,7 @@ PlasmaCore.ColorScope {
         width: parent.width
         opacity: 0.4
         anchors {
-            margins: units.largeSpacing / 2
+            margins: units.largeSpacing
 
             bottom: controlsView.top
         }
@@ -70,7 +70,7 @@ PlasmaCore.ColorScope {
         id: controlsView
         focus: true
         anchors {
-            margins: units.largeSpacing / 2
+            margins: units.largeSpacing
 
             left: parent.left
             right: parent.right
