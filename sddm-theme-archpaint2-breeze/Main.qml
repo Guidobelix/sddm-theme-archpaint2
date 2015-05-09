@@ -76,10 +76,10 @@ Image {
         id: stackView
         property variant geometry: screenModel.geometry(screenModel.primary)
         width: geometry.width
-        height: units.largeSpacing * 14
+        height: 201
         anchors.centerIn: parent
         anchors.horizontalCenterOffset: 0
-        anchors.verticalCenterOffset: geometry.height * 0.225
+        anchors.verticalCenterOffset: 26 + (geometry.height * 0.2)
 
         initialItem: BreezeBlock {
             id: loginPrompt
