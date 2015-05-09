@@ -55,7 +55,6 @@ Rectangle {
     Rectangle {
         property variant geometry: screenModel.geometry(screenModel.primary)
         x: geometry.x; y: geometry.y; width: geometry.width; height: geometry.height
-        property real scale: geometry.width / 1920
         color: "transparent"
         transformOrigin: Item.Top
 
@@ -98,8 +97,8 @@ Rectangle {
         Rectangle {
             anchors.centerIn: parent
             width: parent.width
-            height: 162
-            anchors.verticalCenterOffset: parent.height / 4
+            height: 201
+            anchors.verticalCenterOffset: 26 + (parent.height * 0.2)
             color: "#20FFFFFF"
 
             Image {
@@ -118,9 +117,9 @@ Rectangle {
                 id: mainColumn
                 height: 116
                 width: 300
-                spacing: 4
+                spacing: 12
                 anchors.centerIn: parent
-                anchors.verticalCenterOffset: 9
+                anchors.verticalCenterOffset: 0
                 anchors.horizontalCenterOffset: 300 - parent.width / 2
 
                 Row {
@@ -222,7 +221,7 @@ Rectangle {
                 }
             }
             Column {
-                spacing: 4
+                spacing: 12
                 property int btnWidth: Math.max(loginButton.implicitWidth,
                                                 shutdownButton.implicitWidth,
                                                 rebootButton.implicitWidth, 80) + 8
