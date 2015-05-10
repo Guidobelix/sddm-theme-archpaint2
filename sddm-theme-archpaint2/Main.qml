@@ -99,7 +99,7 @@ Rectangle {
             width: parent.width
             height: 201
             anchors.verticalCenterOffset: 26 + (parent.height * 0.2)
-            color: "#20FFFFFF"
+            color: "#4Ceff0f1"
 
             Image {
                 id: pictpassword
