@@ -103,7 +103,7 @@ Image {
 
                     anchors.centerIn: parent
                     anchors.horizontalCenterOffset: 0
-                    anchors.verticalCenterOffset: units.largeSpacing * 3
+                    anchors.verticalCenterOffset: 18 * 4
                     font.weight: Font.Bold
 
                     PlasmaCore.DataSource {

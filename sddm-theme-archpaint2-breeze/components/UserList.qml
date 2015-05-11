@@ -22,9 +22,9 @@ import QtQuick 2.2
 ListView {
     id: view
     readonly property string selectedUser: currentItem.userName
-    readonly property int userItemWidth: units.largeSpacing * 8
-    readonly property int userItemHeight: units.largeSpacing * 8
-    readonly property int userFaceSize: units.largeSpacing * 6
+    readonly property int userItemWidth: 18 * 8
+    readonly property int userItemHeight: 18 * 8
+    readonly property int userFaceSize: 18 * 6
 
     /*
      * Signals that a user was explicitly selected

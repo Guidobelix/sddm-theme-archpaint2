@@ -68,7 +68,7 @@ BreezeBlock {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Item { height: units.largeSpacing }
+        Item { height: 18 }
 
         PlasmaCore.IconItem {
              id: actionIcon
@@ -92,7 +92,7 @@ BreezeBlock {
             anchors.horizontalCenter: parent.horizontalCenter
 
             //wanted to use actionIcon.paintedWidth but it doesn't work well when the image changes
-            width: units.largeSpacing*7
+            width: 18 * 7
             minimumValue: 0
             maximumValue: root.timeout
             value: root.remainingTime
