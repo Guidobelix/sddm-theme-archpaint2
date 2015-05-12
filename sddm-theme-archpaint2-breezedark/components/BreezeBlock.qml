@@ -25,7 +25,7 @@ import QtQuick.Controls 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
 PlasmaCore.ColorScope {
-    colorGroup: PlasmaCore.Theme.ColorGroup
+    colorGroup: PlasmaCore.Theme.NormalColorGroup
     property alias main: mainView.sourceComponent
     property alias controls: controlsView.sourceComponent
     readonly property alias mainItem: mainView.item
