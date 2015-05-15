@@ -39,17 +39,15 @@ Image {
             x: geometry.x; y: geometry.y; width: geometry.width; height:geometry.height
             property real ratio: geometry.width / geometry.height
             source: {
-                if (ratio == 16.0 / 9.0) {
+                source = "./components/artwork/background.png"
+                if ((ratio - (16.0 / 9.0)) <= 0.001) {
                     source = "./components/artwork/background_169.png"
                 }
-                else if (ratio == 16.0 / 10.0) {
-                    source = "./components/artwork/background_1610.png"
+                else if ((ratio - (16.0 / 10.0)) <= 0.001) {
+                    source = ".components/artwork/background_1610.png"
                 }
-                else if (ratio == 4.0 / 3.0) {
+                else if ((ratio - (4.0 / 3.0)) <= 0.001) {
                     source = "./components/artwork/background_43.png"
-                }
-                else {
-                    source = "./components/artwork/background.png"
                 }
             }
             fillMode: Image.PreserveAspectFit
